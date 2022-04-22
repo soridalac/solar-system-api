@@ -36,3 +36,4 @@ def get_all_planets():
     return jsonify(planets_response)
 
 print("Hello Sorida this is Nish")  
+print("Hello Nish this is Sorida")
