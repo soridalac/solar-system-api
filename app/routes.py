@@ -34,3 +34,5 @@ def get_all_planets():
             "num_of_moons": planet.num_of_moons
         })
     return jsonify(planets_response)
+
+print("Hello Sorida this is Nish")  
