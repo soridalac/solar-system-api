@@ -37,3 +37,5 @@ def get_all_planets():
 
 print("Hello Sorida this is Nish")  
 print("Hello Nish this is Sorida")
+# Updating random stuff
+print("hi!")
