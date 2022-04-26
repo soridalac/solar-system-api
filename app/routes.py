@@ -9,17 +9,16 @@ class Planet:
     
     
 planets = [
-    Planet(1, "Earth", "", 1),
-    Planet(2, "Jupiter", "", 79),
-    Planet(3, "Neptune", "", 14),
-    Planet(4, "Mars", "", 2),
-    Planet(5, "Mercury", "", None),
-    Planet(6, "Saturn", "", 82),
-    Planet(7, "Uranus", "", 27),
-    Planet(8, "Venus", "", None),
-    Planet(9, "Pluto", "", 5)
+    Planet(1, "Mercury", "Named after the Roman messenger god", None),
+    Planet(2, "Venus", "Named after goddess of love and beauty", None),
+    Planet(3, "Earth", "Named after the ground, root word ertha", 1),
+    Planet(4, "Mars", "Named after the god of war", 2),
+    Planet(5, "Jupiter", "Named after the supreme god the ancient Romans", 79),
+    Planet(6, "Saturn", "Named after the king of the Titans", 82),
+    Planet(7, "Uranus", "Named after the original Roman sky god", 27),
+    Planet(8, "Neptune", "Named after the Roman god of the Sea", 14),
     ]
-#print(planets)
+
 
 planets_bp = Blueprint("planets", __name__, url_prefix='/planets')
 
@@ -35,7 +34,4 @@ def get_all_planets():
         })
     return jsonify(planets_response)
 
-print("Hello Sorida this is Nish")  
-print("Hello Nish this is Sorida")
-# Updating random stuff
-print("hi!")
+
