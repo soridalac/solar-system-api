@@ -34,4 +34,14 @@ def get_all_planets():
         })
     return jsonify(planets_response)
 
+@planets_bp.route("/<planet>", methods=["GET"])
+def get_one_planet(planet):
+    for record in planets:
+        if record.name.lower() == planet.lower():
+            return {
+                "id": record.id,
+                "name": record.name,
+                "description": record.description,
+                "num_moons": record.num_of_moons
+            } 
 
