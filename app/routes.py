@@ -34,14 +34,19 @@ def get_all_planets():
         })
     return jsonify(planets_response)
 
-@planets_bp.route("/<planet>", methods=["GET"])
-def get_one_planet(planet):
+@planets_bp.route("/<planet_name>", methods=["GET"])
+def get_one_planet(planet_name):
+    try:
+        planet_name = str(planet_name)
+    except TypeError:
+        return jsonify({"message":f"Planet {planet_name} is an invalid entry; must be a valid planet name"}), 400
+
     for record in planets:
-        if record.name.lower() == planet.lower():
+        if record.name.lower() == planet_name.lower():
             return {
                 "id": record.id,
                 "name": record.name,
                 "description": record.description,
                 "num_moons": record.num_of_moons
             } 
-
+    return jsonify({"message":f"Planet {planet_name} not found"}), 404
