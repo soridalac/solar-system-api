@@ -58,19 +58,85 @@ def get_all_planets():
         })
     return jsonify(planets_response)
 
-# @planets_bp.route("/<planet_name>", methods=["GET"])
-# def get_one_planet(planet_name):
-#     try:
-#         planet_name = str(planet_name)
-#     except TypeError:
-#         return jsonify({"message":f"Planet {planet_name} is an invalid entry; must be a valid planet name"}), 400
+@planets_bp.route("/<planet_id>", methods=["GET"])
+def get_one_planet(planet_id):
+    try:
+        planet_id = int(planet_id)
+    except TypeError:
+        return jsonify({"message":f"Planet {planet_id} is an invalid entry; must be a valid planet id"}), 400
 
-#     for record in planets:
-#         if record.name.lower() == planet_name.lower():
-#             return {
-#                 "id": record.id,
-#                 "name": record.name,
-#                 "description": record.description,
-#                 "num_moons": record.num_of_moons
-#             } 
-#     return jsonify({"message":f"Planet {planet_name} not found"}), 404
+    planet = Planet.query.get(planet_id)
+
+    if planet is None:
+        return jsonify({"message":f"Planet {planet_id} not found"}), 404
+
+
+    
+        # if record.id.lower() == planet_id.lower():
+            # return {
+            #     "id": record.id,
+            #     "name": record.name,
+            #     "description": record.description,
+            #     "num_moons": record.num_of_moons
+            # } 
+    return jsonify({"id": planet.id,
+                "name": planet.name,
+                "description": planet.description,
+                "num_moons": planet.num_moons})
+
+
+@planets_bp.route("/<planet_id>", methods=["PUT"])
+def update_one_planet(planet_id):
+    try:
+        planet_id = int(planet_id)
+    except ValueError:
+        return jsonify({"message":f"Planet {planet_id} is an invalid entry; must be a valid planet id"}), 400
+
+    request_body = request.get_json()
+    
+    if "name" not in request_body or "description" not in request_body or  "num_moons" not in request_body:
+        return jsonify({'msg': f'Must include name , description and num moons'}), 400
+
+    planet = Planet.query.get(planet_id)
+
+    
+   
+
+    if planet is None:
+        return jsonify({"message":f"Planet {planet_id} not found"}), 404
+
+    
+
+    planet.name = request_body["name"]
+    planet.description = request_body["description"]
+    planet.num_moons = request_body["num_moons"]
+
+    db.session.commit()
+
+    return jsonify({'msg': f'Successfully updated planet {planet.id}'}), 200
+
+
+@planets_bp.route("/<planet_id>", methods=["DELETE"])
+def delete_one_planet(planet_id):
+    try:
+        planet_id = int(planet_id)
+    except ValueError:
+        return jsonify({"message":f"Planet {planet_id} is an invalid entry; must be a valid planet id"}), 400
+
+    # request_body = request.get_json()
+    
+    # if "name" not in request_body or "description" not in request_body or  "num_moons" not in request_body:
+    #     return jsonify({'msg': f'Must include name , description and num moons'}), 400
+
+    planet = Planet.query.get(planet_id)
+
+    
+   
+
+    if planet is None:
+        return jsonify({"message":f"Planet {planet_id} not found"}), 404
+
+    db.session.delete(planet)
+    db.session.commit()
+
+    return jsonify({'msg': f"planet {planet.id} successfully deleted"})
