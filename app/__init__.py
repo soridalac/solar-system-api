@@ -5,10 +5,13 @@ from flask_migrate import Migrate
 db = SQLAlchemy()
 migrate = Migrate()
 
-def create_app(test_config=None):
+def create_app(test_config=None): #testing=False
     app = Flask(__name__)
 
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    #if testing == {"testing":True}:
+    #app.config["SQLALCHEMY_DATABASE_URI"] = os.version.get('TESTING_SQLALCHEMY')
+    #else:
     app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://postgres:postgres@localhost:5432/solar_system_development'
 
     db.init_app(app)

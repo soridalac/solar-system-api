@@ -47,8 +47,19 @@ def create_planet():
 
 @planets_bp.route("", methods=["GET"])
 def get_all_planets():
+    planet_query = request.args
+
+    if "name" in planet_query:
+        planets = Planet.query.filter_by(name=planet_query["name"])
+    elif "description" in planet_query:
+        planets = Planet.query.filter_by(description=planet_query["description"])
+    elif "num_moons" in planet_query:
+        planets = Planet.query.filter_by(num_moons=planet_query["num_moons"])
+    else:
+        planets = Planet.query.all()
+
+
     planets_response = []
-    planets = Planet.query.all()
     for planet in planets:
         planets_response.append({
             "id": planet.id,
@@ -57,6 +68,23 @@ def get_all_planets():
             "num_moons": planet.num_moons
         })
     return jsonify(planets_response)
+
+
+
+"""helper Function"""
+# def validated_planet(planet_id):
+#     try:
+#         planet_id = int(planet_id)
+#     except ValueError:
+#         abort(make_response{"message":f"Planet {planet_id} is an invalid entry; must be a valid planet id"}, 400))
+    
+
+#     planet = Planet.query.get(planet_id)
+
+#     if planet is None:
+#         abort(make_response({"message":f"Planet {planet_id} not found"}, 404))
+
+#     return planet
 
 @planets_bp.route("/<planet_id>", methods=["GET"])
 def get_one_planet(planet_id):
@@ -123,10 +151,6 @@ def delete_one_planet(planet_id):
     except ValueError:
         return jsonify({"message":f"Planet {planet_id} is an invalid entry; must be a valid planet id"}), 400
 
-    # request_body = request.get_json()
-    
-    # if "name" not in request_body or "description" not in request_body or  "num_moons" not in request_body:
-    #     return jsonify({'msg': f'Must include name , description and num moons'}), 400
 
     planet = Planet.query.get(planet_id)
 
